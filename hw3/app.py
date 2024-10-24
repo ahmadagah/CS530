@@ -1,7 +1,7 @@
 from flask import Flask
-from .controllers.index import index_route
-from .controllers.view_entries import view_entries_route
-from .controllers.add_entry import add_entry_route
+from controllers.index import index_route
+from controllers.view_entries import view_entries_route
+from controllers.add_entry import add_entry_route
 
 # Initialize the Flask application
 app = Flask(__name__)
