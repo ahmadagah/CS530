@@ -44,10 +44,57 @@ class model(Model):
         return entries
 
     def insert(self, title, genre, performer, songwriter, release_date, lyrics, rating, url):
-        """Inserts a new song entry into the database."""
-        self.cursor.execute(
-            "INSERT INTO songs (title, genre, performer, songwriter, release_date, lyrics, rating, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (title, genre, performer, songwriter, release_date, lyrics, rating, url)
-        )
-        self.connection.commit()
+        """
+        Inserts a new song entry into the database.
+        :param title: String
+        :param genre: String
+        :param performer: String
+        :param songwriter: String
+        :param release_date: Date
+        :param lyrics: String
+        :param rating: Integer
+        :param url: String
+        :return: True if successful, False otherwise
+        """
+        # Prepare the parameters for the query
+        params = {
+            'title': title,
+            'genre': genre,
+            'performer': performer,
+            'songwriter': songwriter,
+            'release_date': release_date,
+            'lyrics': lyrics,
+            'rating': rating,
+            'url': url
+        }
+
+        # Open a connection to the database
+        connection = sqlite3.connect(DB_FILE)
+        cursor = connection.cursor()
+
+
+         # Open a connection to the database
+        connection = sqlite3.connect(DB_FILE)
+        cursor = connection.cursor()
+
+        try:
+            # Execute the INSERT SQL command with named parameters
+            cursor.execute("""
+                INSERT INTO songs (title, genre, performer, songwriter, release_date, lyrics, rating, url) 
+                VALUES (:title, :genre, :performer, :songwriter, :release_date, :lyrics, :rating, :url)
+            """, params)
+
+            # Commit the transaction
+            connection.commit()
+
+        except sqlite3.Error as e:
+            # Handle database errors (print or log the error)
+            print(f"Database error: {e}")
+            return False
+
+        finally:
+            # Always close the cursor and connection to free resources
+            cursor.close()
+            connection.close()
+
         return True
