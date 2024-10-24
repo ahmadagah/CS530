@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2>All Song Entries</h2>
+  <ul>
+    {% for entry in entries %}
+      <li><strong>{{ entry.title }}</strong> by {{ entry.performer }} ({{ entry.release_date }})</li>
+      <li>Genre: {{ entry.genre }}, Written by: {{ entry.songwriter }}</li>
+      <li>Lyrics: {{ entry.lyrics }}</li>
+      <li>Rating: {{ entry.rating }}/10</li>
+      <li><a href="{{ entry.url }}">Listen to the song</a></li>
+      <hr>
+    {% endfor %}
+  </ul>
+{% endblock %}
