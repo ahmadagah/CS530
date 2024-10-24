@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual Environment
+venv/
+myenv/
+env/
+ENV/
+*.env
+
+# SQLite database files
+*.db
+*.sqlite3
+
+# Flask secret keys and environment variables
+instance/
+config.py
+*.env
+*.key
+*.pem
+
+# Logs
+*.log
+logs/
+*.out
+
+# Cache and tmp files
+*.log
+*.pot
+*.pyc
+*.pyo
+*.tmp
+*.log
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VSCode settings folder
+.vscode/
+
+# PyCharm project files
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Node.js / npm if you use JavaScript for static files (optional)
+node_modules/
+npm-debug.log
+yarn-error.log
