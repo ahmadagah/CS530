@@ -1,20 +1,30 @@
 {% extends "layout.html" %}
 
 {% block content %}
+    <!-- 
+        Display all song entries in a list.
+        Each song entry includes the title, performer, release date, genre, songwriter, lyrics, rating, and a link to listen to the song.
+        If there are no songs, a message is displayed.
+    -->
+
     <h2>All Song Entries</h2>
+
+    <!-- List of song entries -->
     <ul>
         {% for entry in entries %}
+            <!-- Display individual song entry details -->
             <li>
                 <strong>{{ entry.title }}</strong> by {{ entry.performer }} ({{ entry.release_date }})
                 <br>Genre: {{ entry.genre }}
                 <br>Songwriter: {{ entry.songwriter }}
                 <br>Lyrics: {{ entry.lyrics }}
                 <br>Rating: {{ entry.rating }} / 10
-                <br><a href="{{ entry.url }}">Listen to the song</a>
+                <br><a href="{{ entry.url }}" target="_blank">Listen to the song</a>
             </li>
-            <hr>
         {% else %}
+            <!-- Message displayed if no songs are available -->
             <p>No songs have been added yet.</p>
         {% endfor %}
     </ul>
+
 {% endblock %}

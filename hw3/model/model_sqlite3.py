@@ -5,7 +5,29 @@ from datetime import date
 DB_FILE = 'songs.db'  # Database file
 
 class model(Model):
+    """
+    A model class for interacting with a SQLite3 database to store and retrieve song entries.
+    
+    This class inherits from a base `Model` class and provides methods to insert and select song data
+    from the database. It automatically creates a `songs` table if it doesn't exist.
+    """
     def __init__(self):
+        """
+        Initializes the model by connecting to the SQLite3 database and creating the `songs` table if it
+        doesn't already exist.
+
+        The `songs` table stores the following fields:
+        - title: The title of the song (TEXT)
+        - genre: The genre of the song (TEXT)
+        - performer: The performer of the song (TEXT)
+        - songwriter: The songwriter of the song (TEXT)
+        - release_date: The release date of the song (DATE)
+        - lyrics: The lyrics of the song (TEXT)
+        - rating: The rating of the song (INTEGER)
+        - url: The URL to the song or related content (TEXT)
+
+        Closes the database connection after table creation.
+        """
         self.connection = sqlite3.connect(DB_FILE)
         self.cursor = self.connection.cursor()
 
@@ -22,7 +44,23 @@ class model(Model):
         self.connection.close()
 
     def select(self):
-        """Returns all song entries as a list of dictionaries."""
+        """
+        Retrieves all song entries from the `songs` table.
+        
+        This method opens a connection to the SQLite database, retrieves all rows from the `songs` table,
+        and converts them into a list of dictionaries, where each dictionary represents a song entry.
+
+        Returns:
+            List[dict]: A list of song entries, each as a dictionary with the following keys:
+                - title (str): Title of the song
+                - genre (str): Genre of the song
+                - performer (str): Performer of the song
+                - songwriter (str): Songwriter of the song
+                - release_date (date): Release date of the song
+                - lyrics (str): Lyrics of the song
+                - rating (int): Rating of the song
+                - url (str): URL to the song or related content
+        """
         self.connection = sqlite3.connect(DB_FILE)
         self.cursor = self.connection.cursor()
         self.cursor.execute("SELECT * FROM songs")
@@ -45,16 +83,23 @@ class model(Model):
 
     def insert(self, title, genre, performer, songwriter, release_date, lyrics, rating, url):
         """
-        Inserts a new song entry into the database.
-        :param title: String
-        :param genre: String
-        :param performer: String
-        :param songwriter: String
-        :param release_date: Date
-        :param lyrics: String
-        :param rating: Integer
-        :param url: String
-        :return: True if successful, False otherwise
+        Inserts a new song entry into the `songs` table in the SQLite3 database.
+
+        Parameters:
+            title (str): The title of the song.
+            genre (str): The genre of the song.
+            performer (str): The performer of the song.
+            songwriter (str): The songwriter of the song.
+            release_date (date): The release date of the song.
+            lyrics (str): The lyrics of the song.
+            rating (int): The rating of the song (must be an integer).
+            url (str): The URL to the song or related content.
+
+        Returns:
+            bool: True if the song was successfully inserted, False otherwise.
+
+        Raises:
+            sqlite3.Error: If an error occurs during database interaction.
         """
         # Prepare the parameters for the query
         params = {
