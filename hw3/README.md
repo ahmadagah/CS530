@@ -36,7 +36,7 @@ Ensure you have the following installed on your machine:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/song-submission-app.git
+   git clone https://github.com/ahmadagah/song-submission-app.git
    cd song-submission-app
 
 2. **Create and activate a virtual environment (optional but recommended):**
@@ -142,7 +142,7 @@ The app uses **SQLite** as its database, and the database file (`songs.db`) is c
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the PSU License. See the `LICENSE` file for more details.
 
 ## Contact
 
