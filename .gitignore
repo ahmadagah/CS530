@@ -1,3 +1,81 @@
-env/
-*.pyc
+# Python compiled files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Environment files
+.env
+*.env
+*.env.*
+
+# Flask cache and instance folder
+instance/
+*.db
+
+# Virtual environment
+venv/
+.env/
+
+# Python-specific caches
+*.pyo
+*.pyd
+*.pyd
+*.pyo
+.Python
+*.pyo
+*.pyd
+
+# Logs
+logs/
+*.log
+
+# IDE files (Uncomment if you use a specific IDE)
+# .vscode/
+# .idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# pyenv
+.python-version
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-log.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Static / build artifacts
+*.sass-cache/
+*.scss-cache/
+
+# Node.js (for JS dependencies, if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backup files
+*~
+
