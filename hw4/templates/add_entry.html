@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- 
+        Form to add a new song entry. 
+        This form allows users to input details such as the title, genre, performer, songwriter, release date, lyrics, rating, and a URL for the song.
+        The form data is sent to the 'add_entry' route via POST method when submitted.
+    -->
+
+    <h2>Add a New Song</h2>
+    
+    <form action="{{ url_for('add_entry') }}" method="POST">
+        
+        <!-- Song title input field -->
+        <p>
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required>
+        </p>
+        
+        <!-- Genre input field -->
+        <p>
+            <label for="genre">Genre:</label>
+            <input type="text" name="genre" id="genre" required>
+        </p>
+
+        <!-- Performer input field -->
+        <p>
+            <label for="performer">Performer:</label>
+            <input type="text" name="performer" id="performer" required>
+        </p>
+
+        <!-- Songwriter input field -->
+        <p>
+            <label for="songwriter">Songwriter:</label>
+            <input type="text" name="songwriter" id="songwriter" required>
+        </p>
+
+        <!-- Release date input field -->
+        <p>
+            <label for="release_date">Release Date:</label>
+            <input type="date" name="release_date" id="release_date" required>
+        </p>
+
+        <!-- Lyrics textarea field -->
+        <p>
+            <label for="lyrics">Lyrics:</label><br>
+            <textarea name="lyrics" id="lyrics" rows="4" cols="50" required></textarea>
+        </p>
+
+        <!-- Rating input field with validation for values between 1 and 10 -->
+        <p>
+            <label for="rating">Rating (1-10):</label>
+            <input type="number" name="rating" id="rating" min="1" max="10" required>
+        </p>
+
+        <!-- URL input field to provide a link to the song -->
+        <p>
+            <label for="url">URL (Link to the song):</label>
+            <input type="url" name="url" id="url" required>
+        </p>
+
+        <!-- Submit button to add the song -->
+        <p>
+            <button type="submit">Add Song</button>
+        </p>
+    </form>
+
+{% endblock %}

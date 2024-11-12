@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- 
+        Home page for the Song Submission App.
+        This page provides links for adding a new song and viewing all existing songs.
+    -->
+    
+    <h2>Welcome to the Song Submission App</h2>
+
+    <!-- Introductory text explaining the purpose of the app -->
+    <p>This is an app where you can add, view, and manage your favorite songs.</p>
+
+    <!-- Link to the form for adding a new song -->
+    <p><a href="{{ url_for('add_entry') }}">Add a New Song</a></p>
+
+    <!-- Link to view all song entries -->
+    <p><a href="{{ url_for('view_entries') }}">View All Songs</a></p>
+
+{% endblock %}
