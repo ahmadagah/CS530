@@ -1,2 +1,7 @@
 Flask==3.0.3
+google-cloud-datastore
+google-cloud-firestore
+wheel
+gunicorn
+rsa
 # Werkzeug==2.0.3
