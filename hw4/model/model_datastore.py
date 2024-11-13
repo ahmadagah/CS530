@@ -13,33 +13,33 @@ def from_datastore(entity):
         entity (datastore.Entity): The entity from Datastore.
 
     Returns:
-       list: A list representing the entity's properties in the format:
-        [
-            'title',
-            'genre',
-            'performer',
-            'songwriter',
-            'release_date',
-            'lyrics',
-            'rating',
-            'url'
-        ]
+       dict: A dictionary representing the entity's properties in the format:
+        {
+            'title': 'title',
+            'genre': 'genre',
+            'performer': 'performer',
+            'songwriter': 'songwriter',
+            'release_date': 'release_date',
+            'lyrics': 'lyrics',
+            'rating': 'rating',
+            'url': 'url'
+        }
     """
     if not entity:
         return None
     if isinstance(entity, list):
         entity = entity.pop()
      
-    return [
-        entity.get('title'),
-        entity.get('genre'),
-        entity.get('performer'),
-        entity.get('songwriter'),
-        entity.get('release_date'),
-        entity.get('lyrics'),
-        entity.get('rating'),
-        entity.get('url')
-    ]
+    return {
+        'title': entity.get('title', ''),
+        'genre': entity.get('genre', ''),
+        'performer': entity.get('performer', ''),
+        'songwriter': entity.get('songwriter', ''),
+        'release_date': entity.get('release_date', ''),
+        'lyrics': entity.get('lyrics', ''),
+        'rating': entity.get('rating', ''),
+        'url': entity.get('url', '')
+    }
 
 class model(Model):
     """
@@ -49,7 +49,7 @@ class model(Model):
         """
         Initializes the model by creating a Datastore client.
         """
-        self.client = datastore.Client(GOOGLE_CLOUD_PROJECT)
+        self.client = datastore.Client(project='cloud-agah-agah')
 
     def select(self):
         """
@@ -65,7 +65,7 @@ class model(Model):
         entities = list(map(from_datastore,query.fetch()))
         return entities
 
-    def insert(self, title, genre, performer, songwriter, lyrics, rating, url):
+    def insert(self, title, genre, performer, songwriter, release_date, lyrics, rating, url):
         """
         Inserts a new song entry into the Datastore.
 
@@ -89,7 +89,7 @@ class model(Model):
             'genre': genre,
             'performer': performer,
             'songwriter': songwriter,
-            'release_date': datetime.today(),
+            'release_date': release_date,
             'lyrics': lyrics,
             'rating': rating,
             'url': url
