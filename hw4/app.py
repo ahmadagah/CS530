@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from controllers.index import index_route
 from controllers.view_entries import view_entries_route
@@ -18,11 +19,5 @@ app.add_url_rule('/view', 'view_entries', view_entries_route)
 app.add_url_rule('/add', 'add_entry', add_entry_route, methods=['GET', 'POST'])
 
 if __name__ == '__main__':
-    """
-    Entry point for running the Flask app.
-    The app is configured to:
-    - Run on host `0.0.0.0` (accessible externally)
-    - Run on port 5000
-    - Enable debug mode (useful for development)
-    """
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    # Bind to PORT if defined, otherwise default to 8080.
+    app.run(host='0.0.0.0', port=8080, debug=True)

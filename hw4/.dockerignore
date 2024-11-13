@@ -1,0 +1,57 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment directories
+venv/
+env/
+
+# Ignore credential file
+songs-key.json
+
+# Ignore configuration files for development tools
+*.git
+*.gitignore
+*.md
+*.log
+*.ini
+*.env
+
+# Ignore Docker-specific files
+Dockerfile
+.dockerignore
+
+# Ignore IDE and editor-specific files
+*.idea/
+.vscode/
+*.swp
+*~
+
+# Ignore cached or temporary files
+*.bak
+*.tmp
+*.temp
+*.old
+*.backup
+
+# Ignore build files
+dist/
+build/
+*.egg-info/
+*.egg
+*.tar.gz
+*.zip
+
+# Ignore test files
+tests/
+*.test.py
+
+# Ignore node_modules if your app uses frontend components
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db
