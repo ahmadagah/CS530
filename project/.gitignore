@@ -1,0 +1,41 @@
+# Python-related ignores
+__pycache__/          # Compiled Python files
+*.py[cod]             # Python cache and compiled files
+*.pyo                 # Optimized Python files
+*.pyd                 # Windows-specific compiled Python files
+.env                  # Environment variables
+*.sqlite3             # SQLite database files
+
+# Flask-related ignores
+instance/             # Flask instance folder (for configurations, etc.)
+*.log                 # Log files
+*.bak                 # Backup files
+
+# Virtual environment
+venv/                 # Python virtual environment folder
+
+# Frontend (React with Vite)
+node_modules/         # Node.js dependencies
+dist/                 # Build directory for production
+.vite/                # Vite cache directory
+
+# OS-specific ignores
+.DS_Store             # macOS file
+Thumbs.db             # Windows thumbnail cache
+desktop.ini           # Windows desktop.ini file
+
+# Editor/IDE ignores
+.idea/                # PyCharm project files
+.vscode/              # VSCode settings
+*.sublime-project     # Sublime Text project files
+*.sublime-workspace   # Sublime Text workspace files
+
+# Docker-related ignores (if using Docker)
+*.env.docker          # Environment variables for Docker
+*.env.production      # Production environment variables
+*.env.development     # Development environment variables
+docker-compose.override.yml # Optional Docker Compose override file
+
+# Git-specific ignores
+.gitignore            # Ignore itself in case of recursive patterns
+
