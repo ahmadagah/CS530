@@ -13,6 +13,7 @@ import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { LocationDialog } from "@/components/layout/location-dialog";
 import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
+import { ShopOnly } from "@/components/layout/shop-only";
 import { VariantSheet } from "@/components/product/variant-sheet";
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/config/site";
@@ -55,25 +56,29 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang={htmlLang} dir={dir} style={brandColors}>
-      <body className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+      <body className="pb-[calc(4rem+env(safe-area-inset-bottom))] has-[[data-intake]]:pb-0 md:pb-0">
         <Providers locale={locale}>
-          <a
-            href="#main"
-            className="sr-only z-[60] rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
-          >
-            {t("nav.skipToContent")}
-          </a>
-          <Header />
+          <ShopOnly>
+            <a
+              href="#main"
+              className="sr-only z-[60] rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:start-4 focus:top-4"
+            >
+              {t("nav.skipToContent")}
+            </a>
+            <Header />
+          </ShopOnly>
           <main id="main" className="min-h-[60vh]">
             {children}
           </main>
-          <Footer />
-          <FloatingCartBar />
-          <MobileTabBar />
-          <CartDrawer />
-          <LoginDialog />
-          <LocationDialog />
-          <VariantSheet />
+          <ShopOnly>
+            <Footer />
+            <FloatingCartBar />
+            <MobileTabBar />
+            <CartDrawer />
+            <LoginDialog />
+            <LocationDialog />
+            <VariantSheet />
+          </ShopOnly>
         </Providers>
       </body>
     </html>
