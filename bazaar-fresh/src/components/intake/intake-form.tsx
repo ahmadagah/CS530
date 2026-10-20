@@ -3,6 +3,7 @@
 import { upload } from "@vercel/blob/client";
 import { ArrowLeft, ArrowRight, Check, CircleAlert, ExternalLink, FileText, Leaf, Loader2, Plus, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { WhatsAppIcon } from "@/components/shared/brand-icons";
 import { Button } from "@/components/ui/button";
 import { intakeQuestions, intakeSections, type IntakeQuestion } from "@/data/intake-questions";
 import { INTAKE_FILE_PREFIX, isAnswered, type IntakeAnswer, type IntakeData, type IntakeFile } from "@/lib/intake-types";
@@ -346,6 +347,16 @@ export function IntakeForm({ linkKey, initial }: { linkKey: string; initial: Int
               {sending ? <Loader2 className="animate-spin" /> : <Check />}
               {submittedAt ? "Send again with my changes" : "Send my answers"}
             </Button>
+            {submittedAt && (
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent("Hi! I've finished the Bazaar Fresh questions.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-12 items-center justify-center gap-2 rounded-full border-[1.5px] border-whatsapp font-bold text-[#128c4b]"
+              >
+                <WhatsAppIcon className="size-5" /> Tell your developer on WhatsApp
+              </a>
+            )}
           </section>
         )}
       </div>
