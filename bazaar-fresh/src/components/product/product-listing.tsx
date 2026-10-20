@@ -12,7 +12,7 @@ import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/com
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useI18n } from "@/i18n/provider";
-import { SORT_KEYS, sortProducts, type SortKey } from "@/lib/catalog";
+import { collapseVariants, SORT_KEYS, sortProducts, type SortKey } from "@/lib/catalog";
 import type { CatalogProduct } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { ProductGrid } from "./product-grid";
@@ -126,15 +126,21 @@ function FilterPanel({
   );
 }
 
-/** Product grid with price / brand / stock filters and sorting. */
+/**
+ * Product grid with price / brand / stock filters and sorting. Pass `sidebar`
+ * (e.g. the sub-category list) to show it on the left instead of the filters,
+ * which then open from the "Filters" button.
+ */
 export function ProductListing({
   products,
   hideSaleFilter,
   emptyAction,
+  sidebar,
 }: {
   products: CatalogProduct[];
   hideSaleFilter?: boolean;
   emptyAction?: React.ReactNode;
+  sidebar?: React.ReactNode;
 }) {
   const { t, price, dir } = useI18n();
   const bounds = useMemo(() => priceBounds(products), [products]);
@@ -160,7 +166,7 @@ export function ProductListing({
         (!filters.inStockOnly || p.inStock) &&
         (!filters.onSaleOnly || p.onSale),
     );
-    return sortProducts(list, sort);
+    return collapseVariants(sortProducts(list, sort));
   }, [products, minPrice, maxPrice, filters.brands, filters.inStockOnly, filters.onSaleOnly, sort]);
 
   const chips: { key: string; label: string; clear: () => void }[] = [
@@ -189,8 +195,14 @@ export function ProductListing({
   const filterProps = { products, bounds, filters: { ...filters, price: priceRange }, onChange: setFilters, hideSaleFilter };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[240px_1fr] lg:gap-8">
-      <aside className="hidden lg:block">
+    <div
+      className={cn(
+        "grid",
+        sidebar ? "grid-cols-[72px_1fr] gap-2.5 sm:grid-cols-[200px_1fr] sm:gap-6 lg:grid-cols-[230px_1fr]" : "gap-6 lg:grid-cols-[240px_1fr] lg:gap-8",
+      )}
+    >
+      {sidebar}
+      <aside className={cn("hidden", !sidebar && "lg:block")}>
         <div className="sticky top-36 rounded-2xl border bg-card p-5 shadow-card">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-bold">
@@ -211,7 +223,7 @@ export function ProductListing({
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">{t("category.productsCount", { count: visible.length })}</p>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="h-9 lg:hidden" onClick={() => setSheetOpen(true)}>
+            <Button variant="outline" size="sm" className={cn("h-9", !sidebar && "lg:hidden")} onClick={() => setSheetOpen(true)}>
               <SlidersHorizontal />
               {t("category.filters")}
               {chips.length > 0 && (
@@ -256,7 +268,7 @@ export function ProductListing({
         )}
 
         {visible.length > 0 ? (
-          <ProductGrid products={visible} cols={4} />
+          <ProductGrid products={visible} cols={sidebar ? 3 : 4} />
         ) : (
           <EmptyState
             icon={PackageSearch}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { calculateTotals, type Totals } from "@/lib/pricing";
+import { calculateBill, type BillDetails } from "@/lib/pricing";
 import type { CatalogProduct } from "@/lib/types";
 import { useCartStore } from "@/store/cart";
 import { useCatalog } from "./use-catalog";
@@ -12,17 +12,18 @@ export interface CartItem {
   lineTotal: number;
 }
 
-export interface CartSummary extends Totals {
+export interface CartSummary extends BillDetails {
   /** Items that can be ordered right now. */
   items: CartItem[];
   /** Items whose product has since gone out of stock. */
   unavailable: CartItem[];
   count: number;
-  savings: number;
 }
 
 export function useCart(): CartSummary {
   const lines = useCartStore((s) => s.lines);
+  const couponCode = useCartStore((s) => s.couponCode);
+  const tip = useCartStore((s) => s.tip);
   const catalog = useCatalog();
 
   return useMemo(() => {
@@ -40,10 +41,10 @@ export function useCart(): CartSummary {
       items.push({ product, quantity, lineTotal: product.finalPrice * quantity });
     }
     const subtotal = items.reduce((sum, i) => sum + i.lineTotal, 0);
-    const savings = items.reduce((sum, i) => sum + (i.product.price - i.product.finalPrice) * i.quantity, 0);
+    const mrpTotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
     const count = items.reduce((sum, i) => sum + i.quantity, 0);
-    return { items, unavailable, count, savings, ...calculateTotals(subtotal) };
-  }, [lines, catalog]);
+    return { items, unavailable, count, ...calculateBill(subtotal, mrpTotal, { couponCode, tip }) };
+  }, [lines, catalog, couponCode, tip]);
 }
 
 /** Quantity of one product currently in the cart. */

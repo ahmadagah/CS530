@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 
 export function DeliveryPromise({ className }: { className?: string }) {
   const { t, price } = useI18n();
-  const { freeThreshold, promiseHours } = siteConfig.delivery;
+  const { freeThreshold, etaMinutes } = siteConfig.delivery;
   const items = [
     { icon: Truck, title: t("promise.freeDelivery"), text: t("promise.freeDeliveryText", { amount: price(freeThreshold) }), flip: true },
-    { icon: Clock, title: t("promise.fast", { hours: promiseHours }), text: t("promise.fastText") },
+    { icon: Clock, title: t("promise.fast", { minutes: etaMinutes }), text: t("promise.fastText") },
     { icon: Banknote, title: t("promise.cod"), text: t("promise.codText") },
     { icon: ShieldCheck, title: t("promise.fresh"), text: t("promise.freshText") },
   ];

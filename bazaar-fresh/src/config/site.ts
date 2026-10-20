@@ -41,9 +41,30 @@ export const siteConfig = {
     freeThreshold: 1500,
     /** Delivery fee (AFN) for orders below the threshold. */
     fee: 100,
-    /** Promised delivery time in hours, shown in banners. */
-    promiseHours: 2,
+    /** Instant-delivery promise in minutes, shown in the header, cards and banners. */
+    etaMinutes: 20,
+    /** Packing fee (AFN) added to every order. */
+    handlingFee: 10,
+    /** Orders below this subtotal (AFN) pay the small-cart fee. */
+    smallCartThreshold: 300,
+    smallCartFee: 30,
+    /** Tip amounts (AFN) offered for the delivery partner. */
+    tips: [20, 30, 50],
   },
+
+  /**
+   * Coupon codes accepted in the cart. Types: "flat" (AFN off), "percent"
+   * (with an optional cap) and "delivery" (free delivery). Descriptions
+   * live in the translation files under `coupons`.
+   */
+  coupons: [
+    { code: "FRESH50", type: "flat", value: 50, minOrder: 500 },
+    { code: "SAVE10", type: "percent", value: 10, maxDiscount: 150, minOrder: 1000 },
+    { code: "FREEDEL", type: "delivery", value: 0, minOrder: 300 },
+  ] as const,
+
+  /** Demo wallet ("Bazaar Money") and referral reward amounts in AFN. */
+  wallet: { startingBalance: 500, topUpAmount: 500, referralReward: 200 },
 
   contact: {
     phone: "+93 79 900 1234",
@@ -63,6 +84,9 @@ export const siteConfig = {
       },
       hours: { en: "Daily 7:00 AM – 10:00 PM", ps: "هره ورځ ۷ بجې سهار – ۱۰ بجې شپه", fa: "همه روزه ۷ صبح – ۱۰ شب" },
       phone: "+93 79 900 1234",
+      city: "Kabul",
+      /** Used by "Detect my location" to pick the nearest store. */
+      coords: { lat: 34.5375, lng: 69.1705 },
     },
     {
       id: "kabul-karte-char",
@@ -74,6 +98,8 @@ export const siteConfig = {
       },
       hours: { en: "Daily 7:00 AM – 10:00 PM", ps: "هره ورځ ۷ بجې سهار – ۱۰ بجې شپه", fa: "همه روزه ۷ صبح – ۱۰ شب" },
       phone: "+93 79 900 2345",
+      city: "Kabul",
+      coords: { lat: 34.515, lng: 69.145 },
     },
     {
       id: "herat-downtown",
@@ -85,6 +111,8 @@ export const siteConfig = {
       },
       hours: { en: "Daily 7:30 AM – 9:30 PM", ps: "هره ورځ ۷:۳۰ سهار – ۹:۳۰ شپه", fa: "همه روزه ۷:۳۰ صبح – ۹:۳۰ شب" },
       phone: "+93 79 900 3456",
+      city: "Herat",
+      coords: { lat: 34.3482, lng: 62.1997 },
     },
   ],
 
@@ -100,7 +128,7 @@ export const siteConfig = {
   ],
 
   /** Payment options at checkout. The first one is the default. Labels live under `payment`. */
-  paymentMethods: ["cod", "hesabpay", "bank"] as const,
+  paymentMethods: ["cod", "wallet", "hesabpay", "bank"] as const,
 
   demo: {
     /** Seconds between automatic order status changes on the tracking page. */
@@ -112,6 +140,8 @@ export type StoreLocation = (typeof siteConfig.stores)[number];
 export type StoreId = StoreLocation["id"];
 export type DeliverySlotId = (typeof siteConfig.deliverySlots)[number]["id"];
 export type PaymentMethod = (typeof siteConfig.paymentMethods)[number];
+export type Coupon = (typeof siteConfig.coupons)[number];
+export type CouponCode = Coupon["code"];
 
 export function getStore(id: string): StoreLocation {
   return siteConfig.stores.find((s) => s.id === id) ?? siteConfig.stores[0];

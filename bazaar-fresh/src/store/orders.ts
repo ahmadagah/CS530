@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import { demoOrders } from "@/data/demo";
 import { ORDER_STATUSES, type Order, type OrderStatus } from "@/lib/types";
 
-export type NewOrder = Omit<Order, "id" | "createdAt" | "status" | "statusHistory" | "autoProgress">;
+export type NewOrder = Omit<Order, "id" | "createdAt" | "status" | "statusHistory" | "autoProgress" | "rating">;
 
 interface OrdersState {
   orders: Order[];
@@ -13,6 +13,7 @@ interface OrdersState {
   setStatus: (id: string, status: OrderStatus) => void;
   /** Moves an order one step along the timeline. */
   advance: (id: string) => void;
+  rate: (id: string, rating: number) => void;
   reset: () => void;
 }
 
@@ -63,11 +64,15 @@ export const useOrderStore = create<OrdersState>()(
             return next ? withStatus(o, next) : o;
           }),
         })),
+      rate: (id, rating) =>
+        set((state) => ({ orders: state.orders.map((o) => (o.id === id ? { ...o, rating } : o)) })),
       reset: () => set({ orders: demoOrders }),
     }),
     {
       name: "bf-orders",
-      version: 1,
+      version: 2,
+      // Orders saved by the first version lack the newer bill fields; start fresh from the demo data.
+      migrate: () => ({ orders: demoOrders }) as unknown as OrdersState,
       storage: createJSONStorage(() => localStorage),
       skipHydration: true,
     },

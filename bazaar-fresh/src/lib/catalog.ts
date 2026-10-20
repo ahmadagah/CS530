@@ -109,3 +109,31 @@ export function searchProducts(list: CatalogProduct[], query: string): CatalogPr
   }
   return scored.sort((a, b) => b.score - a.score || b.product.reviews - a.product.reviews).map((s) => s.product);
 }
+
+/**
+ * Keeps one card per variant group (the cheapest size), so lists show a
+ * single product with an "N options" picker, like rice 5 kg / 10 kg.
+ */
+export function collapseVariants(list: CatalogProduct[]): CatalogProduct[] {
+  const seen = new Set<string>();
+  const out: CatalogProduct[] = [];
+  for (const p of list) {
+    if (!p.variantGroup) {
+      out.push(p);
+      continue;
+    }
+    if (seen.has(p.variantGroup)) continue;
+    seen.add(p.variantGroup);
+    const group = list.filter((x) => x.variantGroup === p.variantGroup);
+    const inStock = group.filter((x) => x.inStock);
+    const pool = inStock.length > 0 ? inStock : group;
+    out.push(pool.reduce((best, x) => (x.finalPrice < best.finalPrice ? x : best)));
+  }
+  return out;
+}
+
+/** All sizes of a product (just the product itself when it has no variants), cheapest first. */
+export function variantsOf(product: CatalogProduct, catalog: CatalogProduct[]): CatalogProduct[] {
+  if (!product.variantGroup) return [product];
+  return catalog.filter((p) => p.variantGroup === product.variantGroup).sort((a, b) => a.finalPrice - b.finalPrice);
+}

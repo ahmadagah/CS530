@@ -1,11 +1,12 @@
 "use client";
 
-import { Banknote, Info, Landmark, Loader2, Lock, MapPin, ShoppingBasket, Smartphone, Store, Zap } from "lucide-react";
+import { Banknote, Gift, Info, Landmark, Loader2, Lock, LogIn, MapPin, ShoppingBasket, Smartphone, Store, Wallet, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
-import { OrderSummaryRows } from "@/components/cart/order-summary";
+import { BillDetails } from "@/components/cart/bill-details";
+import { CouponSection } from "@/components/cart/coupon-section";
 import { EmptyState } from "@/components/shared/empty-state";
 import { HydrationGate } from "@/components/shared/hydration-gate";
 import { ProductImage } from "@/components/shared/product-image";
@@ -13,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,16 +22,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { getStore, siteConfig, type DeliverySlotId, type PaymentMethod, type StoreId } from "@/config/site";
 import { useCart } from "@/hooks/use-cart";
 import { useI18n } from "@/i18n/provider";
+import { toBill } from "@/lib/pricing";
 import type { OrderItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 import { useOrderStore } from "@/store/orders";
+import { useUIStore } from "@/store/ui";
 import { useUserStore } from "@/store/user";
 
 /** Afghan mobile numbers: 07X XXX XXXX, optionally written with +93 / 0093. */
 const AFGHAN_MOBILE = /^(?:\+93|0093|0)?7\d{8}$/;
 const NEW_ADDRESS = "new";
-const paymentIcons: Record<PaymentMethod, typeof Banknote> = { cod: Banknote, hesabpay: Smartphone, bank: Landmark };
+const paymentIcons: Record<PaymentMethod, typeof Banknote> = { cod: Banknote, wallet: Wallet, hesabpay: Smartphone, bank: Landmark };
 
 function Step({ n, title, icon, children }: { n: number; title: string; icon: ReactNode; children: ReactNode }) {
   const { num } = useI18n();
@@ -98,9 +102,14 @@ function CheckoutForm() {
   const profile = useUserStore((s) => s.profile);
   const addresses = useUserStore((s) => s.addresses);
   const defaultStore = useUserStore((s) => s.storeId);
+  const deliveryAddressId = useUserStore((s) => s.deliveryAddressId);
+  const walletBalance = useUserStore((s) => s.walletBalance);
+  const instructions = useCartStore((s) => s.instructions);
 
   const [storeId, setStoreId] = useState<StoreId>(defaultStore);
-  const [addressId, setAddressId] = useState(addresses[0]?.id ?? NEW_ADDRESS);
+  const [addressId, setAddressId] = useState(deliveryAddressId ?? addresses[0]?.id ?? NEW_ADDRESS);
+  const [forSomeoneElse, setForSomeoneElse] = useState(false);
+  const [receiver, setReceiver] = useState({ name: "", phone: "" });
   const [newAddress, setNewAddress] = useState({ line: "", area: "", city: storeId.startsWith("herat") ? "Herat" : "Kabul" });
   const [name, setName] = useState(profile.name);
   const [phone, setPhone] = useState(profile.phone);
@@ -133,6 +142,11 @@ function CheckoutForm() {
     const next: Record<string, string> = {};
     if (!name.trim()) next.name = t("checkout.errors.required");
     if (!AFGHAN_MOBILE.test(phone.replace(/[\s\-()]/g, ""))) next.phone = t("checkout.errors.phone");
+    if (forSomeoneElse) {
+      if (!receiver.name.trim()) next.receiverName = t("checkout.errors.required");
+      if (!AFGHAN_MOBILE.test(receiver.phone.replace(/[\s\-()]/g, ""))) next.receiverPhone = t("checkout.errors.phone");
+    }
+    if (payment === "wallet" && walletBalance < cart.total) next.payment = t("checkout.walletLow");
     if (usingNewAddress) {
       if (!newAddress.line.trim()) next.line = t("checkout.errors.required");
       if (!newAddress.area.trim()) next.area = t("checkout.errors.required");
@@ -180,12 +194,17 @@ function CheckoutForm() {
       address: { label: address.label, line: address.line, area: address.area, city: address.city },
       slotId,
       paymentMethod: payment,
+      receiver: forSomeoneElse ? { name: receiver.name.trim(), phone: receiver.phone.trim() } : undefined,
+      couponCode: cart.appliedCoupon,
+      instructions,
       notes: notes.trim() || undefined,
       items,
-      subtotal: cart.subtotal,
-      deliveryFee: cart.deliveryFee,
-      total: cart.total,
+      ...toBill(cart),
     });
+    if (payment === "wallet") {
+      user.payFromWallet(order.total, order.id);
+      toast(t("checkout.walletPaid", { amount: price(order.total) }));
+    }
     useCartStore.getState().clear();
     toast.success(t("checkout.orderPlaced"), { description: t("checkout.orderPlacedDesc", { number: order.id }) });
     router.push(`/orders/${order.id}?placed=1`);
@@ -310,6 +329,36 @@ function CheckoutForm() {
               />
             </Field>
           </div>
+          <label className="mt-5 flex cursor-pointer items-center justify-between gap-3 rounded-2xl bg-surface p-3.5 text-sm font-semibold">
+            <span className="flex items-center gap-2">
+              <Gift className="size-4 text-deal" /> {t("checkout.forSomeoneElse")}
+            </span>
+            <Switch checked={forSomeoneElse} onCheckedChange={setForSomeoneElse} />
+          </label>
+          {forSomeoneElse && (
+            <div className="mt-4 grid gap-4 animate-fade-up sm:grid-cols-2">
+              <Field id="receiverName" label={t("checkout.receiverName")} error={errors.receiverName}>
+                <Input
+                  id="receiverName"
+                  value={receiver.name}
+                  onChange={(e) => setReceiver({ ...receiver, name: e.target.value })}
+                  aria-invalid={Boolean(errors.receiverName)}
+                />
+              </Field>
+              <Field id="receiverPhone" label={t("checkout.receiverPhone")} error={errors.receiverPhone}>
+                <Input
+                  id="receiverPhone"
+                  type="tel"
+                  inputMode="tel"
+                  dir="ltr"
+                  value={receiver.phone}
+                  onChange={(e) => setReceiver({ ...receiver, phone: e.target.value })}
+                  aria-invalid={Boolean(errors.receiverPhone)}
+                  className="text-start rtl:text-end"
+                />
+              </Field>
+            </div>
+          )}
         </Step>
 
         <Step n={4} title={t("checkout.slot")} icon={<Zap className="size-5" />}>
@@ -331,7 +380,9 @@ function CheckoutForm() {
                           </Badge>
                         )}
                       </span>
-                      <span className="text-sm leading-snug font-semibold">{t(`slots.${slot.id}`)}</span>
+                      <span className="text-sm leading-snug font-semibold">
+                        {t(`slots.${slot.id}`, { minutes: siteConfig.delivery.etaMinutes })}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -356,11 +407,17 @@ function CheckoutForm() {
                       {i === 0 && <Badge variant="soft">{t("payment.popular")}</Badge>}
                     </span>
                     <span className="mt-0.5 block text-sm text-muted-foreground">{t(`payment.${method}Desc`)}</span>
+                    {method === "wallet" && (
+                      <span className={cn("mt-1 block text-xs font-bold", walletBalance >= cart.total ? "text-primary" : "text-destructive")}>
+                        {t("checkout.walletBalance", { amount: price(walletBalance) })}
+                      </span>
+                    )}
                   </span>
                 </label>
               );
             })}
           </RadioGroup>
+          {errors.payment && <p className="mt-2 text-xs font-medium text-destructive">{errors.payment}</p>}
           <div className="mt-5">
             <Field id="notes" label={t("checkout.notes")}>
               <Textarea
@@ -399,7 +456,8 @@ function CheckoutForm() {
               </li>
             ))}
           </ul>
-          <OrderSummaryRows totals={cart} savings={cart.savings} />
+          <CouponSection subtotal={cart.subtotal} className="mb-5" />
+          <BillDetails bill={cart} savings={cart.savings} couponCode={cart.appliedCoupon} />
           <Button type="submit" size="lg" className="mt-5 hidden w-full lg:flex" disabled={placing}>
             {placing && <Loader2 className="animate-spin" />}
             {placeLabel}
@@ -430,6 +488,27 @@ function CheckoutForm() {
   );
 }
 
+/** Checkout needs a (demo) login, like Blinkit's "Login to proceed". */
+function LoginGate({ children }: { children: ReactNode }) {
+  const { t } = useI18n();
+  const loggedIn = useUserStore((s) => s.loggedIn);
+  const openLogin = useUIStore((s) => s.openLogin);
+  if (loggedIn) return <>{children}</>;
+  return (
+    <EmptyState
+      icon={LogIn}
+      title={t("auth.loginToProceed")}
+      description={t("auth.loginToSee")}
+      action={
+        <Button size="lg" onClick={() => openLogin("/checkout")}>
+          {t("header.login")}
+        </Button>
+      }
+      className="rounded-3xl border border-dashed"
+    />
+  );
+}
+
 export function CheckoutView() {
   const { t } = useI18n();
   return (
@@ -442,7 +521,9 @@ export function CheckoutView() {
         </p>
       </div>
       <HydrationGate fallback={<CheckoutSkeleton />}>
-        <CheckoutForm />
+        <LoginGate>
+          <CheckoutForm />
+        </LoginGate>
       </HydrationGate>
     </div>
   );

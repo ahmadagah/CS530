@@ -6,10 +6,14 @@ import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
+import { LoginDialog } from "@/components/auth/login-dialog";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { FloatingCartBar } from "@/components/cart/floating-cart-bar";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { LocationDialog } from "@/components/layout/location-dialog";
 import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
+import { VariantSheet } from "@/components/product/variant-sheet";
 import { Providers } from "@/components/providers";
 import { siteConfig } from "@/config/site";
 import { localeMeta } from "@/i18n/config";
@@ -20,11 +24,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const t = createTranslator(locale);
   const name = locale === "en" ? siteConfig.name : siteConfig.localName[locale];
-  const hours = siteConfig.delivery.promiseHours;
+  const minutes = siteConfig.delivery.etaMinutes;
   return {
     metadataBase: new URL(siteConfig.url),
-    title: { default: t("meta.title", { name, hours }), template: `%s · ${name}` },
-    description: t("meta.description", { hours }),
+    title: { default: t("meta.title", { name, minutes }), template: `%s · ${name}` },
+    description: t("meta.description", { minutes }),
     applicationName: siteConfig.name,
     openGraph: { siteName: siteConfig.name, type: "website" },
   };
@@ -64,8 +68,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             {children}
           </main>
           <Footer />
+          <FloatingCartBar />
           <MobileTabBar />
           <CartDrawer />
+          <LoginDialog />
+          <LocationDialog />
+          <VariantSheet />
         </Providers>
       </body>
     </html>

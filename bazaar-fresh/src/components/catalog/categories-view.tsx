@@ -16,7 +16,7 @@ export function CategoriesView() {
   return (
     <div className="container-page py-6 sm:py-10">
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t("category.allTitle")}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{t("category.allHint", { hours: siteConfig.delivery.promiseHours })}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{t("category.allHint", { minutes: siteConfig.delivery.etaMinutes })}</p>
 
       <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
         {categories.map((c) => {

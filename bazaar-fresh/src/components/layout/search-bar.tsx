@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpLeft, Search, TrendingUp, X } from "lucide-react";
+import { ArrowUpLeft, History, Search, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
@@ -11,6 +11,7 @@ import { useI18n } from "@/i18n/provider";
 import { normalizeText, searchProducts } from "@/lib/catalog";
 import type { CatalogProduct } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useUserStore } from "@/store/user";
 
 type Option = { kind: "category"; category: Category; href: string } | { kind: "product"; product: CatalogProduct; href: string };
 
@@ -47,8 +48,16 @@ export function SearchBar({
   const [query, setQuery] = useState(initialQuery);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
+  const [termIndex, setTermIndex] = useState(0);
+  const recent = useUserStore((s) => s.recentSearches);
 
   useEffect(() => setQuery(initialQuery), [initialQuery]);
+
+  // Rotate the example term in the placeholder, like "Search “rice”" → "Search “tea”".
+  useEffect(() => {
+    const id = window.setInterval(() => setTermIndex((i) => i + 1), 2600);
+    return () => window.clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
@@ -83,6 +92,7 @@ export function SearchBar({
   const submit = (value = query) => {
     const q = value.trim();
     if (!q) return;
+    useUserStore.getState().addRecentSearch(q);
     go(`/search?q=${encodeURIComponent(q)}`);
   };
 
@@ -134,7 +144,7 @@ export function SearchBar({
             }}
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
-            placeholder={t("header.searchPlaceholder")}
+            placeholder={query ? undefined : " "}
             aria-label={t("nav.search")}
             role="combobox"
             aria-expanded={showPanel}
@@ -147,6 +157,18 @@ export function SearchBar({
               size === "lg" ? "h-13 text-base" : "h-11",
             )}
           />
+          {!query && (
+            <span
+              key={termIndex % popular.length}
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute start-11 top-1/2 -translate-y-1/2 truncate text-muted-foreground/90 animate-in fade-in slide-in-from-bottom-2 duration-300",
+                size === "lg" ? "end-4 text-base" : "end-11 text-[15px]",
+              )}
+            >
+              {t("search.rotating", { term: popular[termIndex % popular.length] })}
+            </span>
+          )}
           {query && (
             <button
               type="button"
@@ -171,7 +193,42 @@ export function SearchBar({
           className="absolute inset-x-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-2xl border bg-popover shadow-2xl animate-in fade-in-0 slide-in-from-top-1 duration-150"
         >
           {!query.trim() ? (
-            <div className="p-4">
+            <div className="space-y-4 p-4">
+              {recent.length > 0 && (
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                      <History className="size-3.5" />
+                      {t("search.recent")}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => useUserStore.getState().clearRecentSearches()}
+                      className="text-xs font-semibold text-primary hover:underline"
+                    >
+                      {t("search.clearRecent")}
+                    </button>
+                  </div>
+                  <ul>
+                    {recent.map((term) => (
+                      <li key={term}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setQuery(term);
+                            submit(term);
+                          }}
+                          className="flex w-full items-center gap-2.5 rounded-lg px-1.5 py-2 text-start text-sm hover:bg-muted"
+                        >
+                          <History className="size-4 text-muted-foreground" />
+                          {term}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div>
               <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                 <TrendingUp className="size-3.5" />
                 {t("search.popularSearches")}
@@ -190,6 +247,7 @@ export function SearchBar({
                     {term}
                   </button>
                 ))}
+              </div>
               </div>
             </div>
           ) : options.length === 0 ? (

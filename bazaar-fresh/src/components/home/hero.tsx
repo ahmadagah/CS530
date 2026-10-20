@@ -47,7 +47,7 @@ export function Hero() {
                 {t("home.heroEyebrow")}
               </span>
               <h1 className="mt-4 text-3xl leading-[1.1] font-extrabold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
-                {t("home.heroTitle", { hours: siteConfig.delivery.promiseHours })}
+                {t("home.heroTitle", { minutes: siteConfig.delivery.etaMinutes })}
               </h1>
               <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:text-base">
                 {t("home.heroSubtitle", { count: Math.floor(catalog.length / 10) * 10 })}

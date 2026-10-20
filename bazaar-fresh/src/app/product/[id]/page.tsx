@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: locale !== "en" && product.localName ? product.localName[locale] : product.name,
     description: product.description,
-    openGraph: { images: [product.image] },
+    openGraph: product.image ? { images: [product.image] } : undefined,
   };
 }
 

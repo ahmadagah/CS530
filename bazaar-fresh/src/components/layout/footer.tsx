@@ -26,7 +26,7 @@ function StoreBadge({ icon, top, bottom }: { icon: React.ReactNode; top: string;
 export function Footer() {
   const { t, categoryName, locale, siteName } = useI18n();
   const year = localizeDigits(String(new Date().getFullYear()), locale);
-  const hours = siteConfig.delivery.promiseHours;
+  const minutes = siteConfig.delivery.etaMinutes;
   const linkClass = "text-sm text-white/70 transition hover:text-white";
 
   return (
@@ -34,7 +34,7 @@ export function Footer() {
       <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr]">
         <div>
           <Logo inverted />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{t("footer.tagline", { hours })}</p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{t("footer.tagline", { minutes })}</p>
           <a
             href={`https://wa.me/${siteConfig.contact.whatsapp}`}
             target="_blank"
@@ -94,6 +94,11 @@ export function Footer() {
             <li>
               <Link href="/account#orders" className={linkClass}>
                 {t("nav.orders")}
+              </Link>
+            </li>
+            <li>
+              <Link href="/faq" className={linkClass}>
+                {t("nav.faq")}
               </Link>
             </li>
             <li>

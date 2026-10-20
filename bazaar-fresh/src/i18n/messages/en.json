@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "{name} — Fresh groceries delivered in {hours} hours",
-    "description": "Shop fresh produce, meat, rice, tea and household essentials online. Delivered across Kabul and Herat in {hours} hours. Cash on delivery."
+    "title": "{name} — Groceries delivered in {minutes} minutes",
+    "description": "Fresh produce, meat, rice, tea and household essentials delivered across Kabul and Herat in {minutes} minutes. Cash on delivery."
   },
   "nav": {
     "home": "Home",
@@ -12,7 +12,8 @@
     "allCategories": "All categories",
     "weeklyDeals": "Weekly deals",
     "orders": "My orders",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "faq": "FAQs"
   },
   "header": {
     "announcement": "Free delivery on orders over {amount}",
@@ -23,7 +24,10 @@
     "language": "Language",
     "searchPlaceholder": "Search rice, tea, fruit, brands…",
     "openCart": "Open cart",
-    "account": "My account"
+    "account": "My account",
+    "deliveryIn": "Delivery in {minutes} minutes",
+    "selectLocation": "Select delivery location",
+    "login": "Login"
   },
   "search": {
     "categories": "Categories",
@@ -40,11 +44,14 @@
     "popularSearches": "Popular searches",
     "clear": "Clear search",
     "all": "All",
-    "popularTerms": "Basmati rice|Green tea|Pomegranate|Naan|Eggs|Chicken"
+    "popularTerms": "Basmati rice|Green tea|Pomegranate|Naan|Eggs|Chicken",
+    "rotating": "Search “{term}”",
+    "recent": "Recent searches",
+    "clearRecent": "Clear"
   },
   "home": {
     "heroEyebrow": "This week's mega savings",
-    "heroTitle": "Fresh groceries, delivered in {hours} hours",
+    "heroTitle": "Groceries delivered in {minutes} minutes",
     "heroSubtitle": "Shop {count}+ products from your neighbourhood supermarket in Kabul and Herat. Pay cash when it arrives.",
     "heroCta": "Shop weekly deals",
     "heroSecondary": "Browse categories",
@@ -65,7 +72,14 @@
     "orderAgainHint": "Favourites from your recent orders",
     "seeAll": "See all",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "promo3Title": "Baby care essentials",
+    "promo3Text": "Diapers, wipes and baby food",
+    "promo4Title": "Home & cleaning",
+    "promo4Text": "Everything to keep your home sparkling",
+    "promo5Title": "Dry fruits & nuts",
+    "promo5Text": "Kandahar raisins, almonds and more",
+    "orderNow": "Order now"
   },
   "time": {
     "d": "{n}d",
@@ -75,8 +89,8 @@
   "promise": {
     "freeDelivery": "Free delivery",
     "freeDeliveryText": "On orders over {amount}",
-    "fast": "Delivery in {hours} hours",
-    "fastText": "Or pick a time that suits you",
+    "fast": "Delivery in {minutes} minutes",
+    "fastText": "From a store near you",
     "cod": "Cash on delivery",
     "codText": "Pay when your groceries arrive",
     "fresh": "Freshness guarantee",
@@ -119,11 +133,35 @@
     "remove": "Remove from cart",
     "inCart": "{count} in cart",
     "maxReached": "Only {count} available",
-    "deliveryNote": "Delivered within {hours} hours",
+    "deliveryNote": "Delivered in {minutes} minutes",
     "codNote": "Cash on delivery available",
     "freshNote": "Freshness guaranteed or your money back",
     "localBadge": "Local",
-    "soldOutNote": "This item is sold out at the moment. Check back soon."
+    "soldOutNote": "This item is sold out at the moment. Check back soon.",
+    "mins": "{minutes} MINS",
+    "options": "{count} options",
+    "selectUnit": "Select unit",
+    "notifyMe": "Notify me",
+    "notifyOn": "We'll let you know when {name} is back",
+    "notifyOff": "Back-in-stock alert turned off",
+    "notifying": "Alert on",
+    "viewBrand": "View all by {brand}",
+    "whyTitle": "Why shop from {name}?",
+    "why1Title": "Superfast delivery",
+    "why1Text": "Get your order at your doorstep in minutes from a store near you.",
+    "why2Title": "Best prices & offers",
+    "why2Text": "Weekly deals, coupons and fair prices on everyday essentials.",
+    "why3Title": "Wide assortment",
+    "why3Text": "Choose from {count}+ products across food, personal care and household.",
+    "shelfLife": "Shelf life",
+    "countryOfOrigin": "Country of origin",
+    "afghanistan": "Afghanistan",
+    "returnPolicy": "Return policy",
+    "returnPolicyText": "Damaged, defective or expired items can be returned within 48 hours of delivery.",
+    "disclaimer": "Disclaimer",
+    "disclaimerText": "Product photos are for illustration. Packaging may vary; please read the label before use.",
+    "similar": "Similar products",
+    "alsoBought": "People also bought"
   },
   "category": {
     "productsCount_one": "{count} product",
@@ -148,16 +186,17 @@
     "emptyTitle": "No products match your filters",
     "emptyHint": "Try removing a filter or widening the price range.",
     "allTitle": "All categories",
-    "allHint": "Everything for your kitchen and home, delivered in {hours} hours.",
+    "allHint": "Everything for your kitchen and home, delivered in {minutes} minutes.",
     "dealsTitle": "Weekly deals",
-    "dealsHint": "Our best prices this week — while stock lasts."
+    "dealsHint": "Our best prices this week — while stock lasts.",
+    "all": "All"
   },
   "cart": {
     "title": "Your cart",
     "itemCount_one": "{count} item",
     "itemCount": "{count} items",
     "empty": "Your cart is empty",
-    "emptyHint": "Add fresh produce, pantry staples and more — we'll deliver it in {hours} hours.",
+    "emptyHint": "Add fresh produce, pantry staples and more — we'll deliver it in {minutes} minutes.",
     "startShopping": "Start shopping",
     "subtotal": "Subtotal",
     "deliveryFee": "Delivery fee",
@@ -176,7 +215,40 @@
     "summary": "Order summary",
     "suggestions": "Don't forget",
     "savings": "You save",
-    "unavailable": "This item is no longer available"
+    "unavailable": "This item is no longer available",
+    "shipment_one": "Shipment of {count} item",
+    "shipment": "Shipment of {count} items",
+    "billDetails": "Bill details",
+    "itemsTotal": "Items total",
+    "handlingFee": "Handling charge",
+    "smallCartFee": "Small cart charge",
+    "smallCartHint": "Add {amount} more to avoid the small cart charge",
+    "couponDiscount": "Coupon discount",
+    "tip": "Delivery partner tip",
+    "grandTotal": "Grand total",
+    "totalSavings": "Your total savings",
+    "totalSavingsText": "Includes product discounts, coupons and free delivery",
+    "applyCoupon": "Apply coupon",
+    "viewCoupons": "View all coupons",
+    "couponApplied": "{code} applied",
+    "couponSaved": "You saved {amount} with this coupon",
+    "couponFreeDelivery": "Free delivery unlocked with {code}",
+    "couponRemove": "Remove",
+    "couponInvalid": "That coupon code isn't valid",
+    "couponShort": "Add {amount} more to use {code}",
+    "couponEnter": "Enter coupon code",
+    "couponApply": "Apply",
+    "coupons": "Coupons & offers",
+    "tipTitle": "Tip your delivery partner",
+    "tipText": "Your kindness means a lot! 100% of the tip goes to your delivery partner.",
+    "tipCustom": "Custom",
+    "tipCustomPrompt": "Tip amount",
+    "instructions": "Delivery instructions",
+    "cancellationTitle": "Cancellation policy",
+    "cancellationText": "Orders can't be cancelled once packed. If there is an unexpected delay, you'll get a refund where applicable.",
+    "beforeCheckout": "Before you checkout",
+    "proceed": "Proceed",
+    "totalLabel": "Total"
   },
   "checkout": {
     "title": "Checkout",
@@ -210,10 +282,16 @@
     "orderPlaced": "Order placed!",
     "orderPlacedDesc": "Order {number} has been received.",
     "editCart": "Edit cart",
-    "agree": "By placing your order you agree to the demo terms. No payment will be charged."
+    "agree": "By placing your order you agree to the demo terms. No payment will be charged.",
+    "forSomeoneElse": "Ordering for someone else?",
+    "receiverName": "Receiver's name",
+    "receiverPhone": "Receiver's mobile number",
+    "walletBalance": "Balance: {amount}",
+    "walletLow": "Not enough balance — add money from your account page.",
+    "walletPaid": "{amount} paid from your wallet"
   },
   "slots": {
-    "express": "Express — within 2 hours",
+    "express": "Instant — in {minutes} minutes",
     "today-14": "2:00 – 4:00 PM",
     "today-16": "4:00 – 6:00 PM",
     "today-18": "6:00 – 8:00 PM",
@@ -231,7 +309,9 @@
     "hesabpayDesc": "Pay from your HesabPay wallet — we'll send a payment request to your phone.",
     "bank": "Bank transfer",
     "bankDesc": "Transfer to our bank account. We'll send the account details by SMS.",
-    "popular": "Most popular"
+    "popular": "Most popular",
+    "wallet": "Bazaar Money wallet",
+    "walletDesc": "Pay instantly from your wallet balance."
   },
   "order": {
     "thanks": "Thank you, {name}!",
@@ -272,7 +352,24 @@
     "placedOn": "Placed {date}",
     "help": "Need help with this order?",
     "chat": "Chat on WhatsApp",
-    "backToShop": "Continue shopping"
+    "backToShop": "Continue shopping",
+    "arrivingIn": "Arriving in {minutes} minutes",
+    "arrivingSoon": "Arriving any moment",
+    "deliveredIn": "Delivered in {minutes} minutes",
+    "riderRated": "Top-rated delivery partner",
+    "mapStore": "Store",
+    "mapHome": "You",
+    "rateTitle": "How was your order?",
+    "rateThanks": "Thanks for your feedback!",
+    "rate1": "Terrible",
+    "rate2": "Bad",
+    "rate3": "Okay",
+    "rate4": "Good",
+    "rate5": "Loved it!",
+    "yourRating": "Your rating",
+    "receiver": "Receiver",
+    "instructions": "Instructions",
+    "coupon": "Coupon"
   },
   "account": {
     "title": "My account",
@@ -302,7 +399,27 @@
     "demoNote": "This is a demo account — no login needed.",
     "statOrders": "Orders",
     "statSpent": "Total spent",
-    "statAddresses": "Addresses"
+    "statAddresses": "Addresses",
+    "wallet": "Bazaar Money wallet",
+    "walletBalance": "Available balance",
+    "addMoney": "Add {amount}",
+    "added": "{amount} added to your wallet",
+    "history": "Transactions",
+    "kind_welcome": "Welcome bonus",
+    "kind_topup": "Money added",
+    "kind_payment": "Paid for order {order}",
+    "kind_referral": "Referral reward",
+    "refer": "Refer & earn",
+    "referText": "Invite friends to {name}. You both get {amount} in your wallet after their first order.",
+    "yourCode": "Your code",
+    "copy": "Copy",
+    "copied": "Code copied",
+    "share": "Share on WhatsApp",
+    "shareText": "Get groceries in {minutes} minutes with {name}! Use my code {code} to get {amount} off.",
+    "alerts": "Back-in-stock alerts",
+    "noAlerts": "Tap “Notify me” on a sold-out product to get an alert here.",
+    "faq": "FAQs",
+    "help": "Help & support"
   },
   "admin": {
     "title": "Store admin",
@@ -345,7 +462,7 @@
     "resetRow": "Undo changes"
   },
   "footer": {
-    "tagline": "Afghanistan's fresh online supermarket. Groceries delivered to your door in {hours} hours.",
+    "tagline": "Afghanistan's quick grocery app. Groceries delivered to your door in {minutes} minutes.",
     "stores": "Our stores",
     "shop": "Shop",
     "help": "Your account",
@@ -363,5 +480,79 @@
     "notFoundTitle": "Page not found",
     "notFoundText": "The page you are looking for doesn't exist or has moved.",
     "goHome": "Back to home"
+  },
+  "location": {
+    "title": "Change location",
+    "detect": "Detect my location",
+    "detecting": "Detecting…",
+    "detectFailed": "We couldn't get your location. Pick an address or store below.",
+    "detected": "Nearest store: {store}",
+    "or": "OR",
+    "saved": "Saved addresses",
+    "stores": "Our stores",
+    "storeEta": "{minutes} min delivery",
+    "addNew": "Add a new address"
+  },
+  "auth": {
+    "title": "Log in or sign up",
+    "tagline": "Afghanistan's quick grocery app",
+    "phone": "Mobile number",
+    "continue": "Continue",
+    "terms": "By continuing, you agree to the demo terms of service and privacy policy.",
+    "otpTitle": "OTP verification",
+    "otpSent": "We've sent a 4-digit code to {phone}",
+    "otpHint": "Demo: type any 4 digits, e.g. 1234",
+    "verify": "Verify",
+    "resendIn": "Resend code in {seconds}s",
+    "resend": "Resend code",
+    "resent": "A new code has been sent",
+    "changeNumber": "Change number",
+    "welcome": "Welcome, {name}!",
+    "logout": "Log out",
+    "loggedOut": "You have been logged out",
+    "loginToProceed": "Login to proceed",
+    "loginToSee": "Log in to see your orders, addresses and wallet."
+  },
+  "coupons": {
+    "FRESH50": "Flat {amount} off on orders above {min}",
+    "SAVE10": "{percent}% off up to {max} on orders above {min}",
+    "FREEDEL": "Free delivery on orders above {min}"
+  },
+  "instructions": {
+    "noCall": "Avoid calling",
+    "noBell": "Don't ring the bell",
+    "leaveAtDoor": "Leave at the door",
+    "leaveWithGuard": "Leave with the guard"
+  },
+  "help": {
+    "title": "Help & support",
+    "agent": "{name} support",
+    "greeting": "Salaam! How can we help you with order {number}?",
+    "q1": "Where is my order?",
+    "a1": "Your order is “{status}”. It should reach you in about {minutes} minutes.",
+    "q2": "An item is missing or damaged",
+    "a2": "Sorry about that! We'll refund missing or damaged items to your wallet within 24 hours.",
+    "q3": "I want to change my address",
+    "a3": "Addresses can't be changed after packing starts, but our team can help on WhatsApp.",
+    "q4": "Cancel my order",
+    "a4": "Orders can be cancelled until they are packed. Message us on WhatsApp and we'll take care of it.",
+    "placeholder": "Type a message…",
+    "send": "Send",
+    "fallback": "Thanks! A support agent will reply shortly. For faster help, chat with us on WhatsApp."
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "q1": "Where do you deliver?",
+    "a1": "We deliver across Kabul (from Shahr-e-Naw and Karte Char) and in Herat city.",
+    "q2": "How fast is delivery?",
+    "a2": "Most orders arrive in {minutes} minutes. You can also pick a later delivery slot at checkout.",
+    "q3": "How can I pay?",
+    "a3": "Cash on delivery, your Bazaar Money wallet, HesabPay or bank transfer.",
+    "q4": "Is there a minimum order?",
+    "a4": "No. Orders below {amount} have a small cart charge, and delivery is free above {free}.",
+    "q5": "Can I return an item?",
+    "a5": "Damaged, defective or expired items can be returned within 48 hours. The refund goes to your wallet.",
+    "q6": "How do coupons work?",
+    "a6": "Open your cart, tap “Apply coupon” and pick an offer. Each coupon has a minimum order value."
   }
 }

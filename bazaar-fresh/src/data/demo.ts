@@ -3,7 +3,7 @@
  * account page and "Order again" without a real login.
  */
 
-import { siteConfig } from "@/config/site";
+import { calculateBill, toBill } from "@/lib/pricing";
 import type { Address, Order, OrderItem } from "@/lib/types";
 import { products } from "./products";
 
@@ -50,10 +50,13 @@ function pastOrder(
   id: string,
   createdAt: string,
   items: OrderItem[],
-  extra: Pick<Order, "slotId" | "paymentMethod" | "storeId">,
+  extra: Pick<Order, "slotId" | "paymentMethod" | "storeId"> & { rating?: number },
 ): Order {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const deliveryFee = subtotal >= siteConfig.delivery.freeThreshold ? 0 : siteConfig.delivery.fee;
+  const mrpTotal = items.reduce(
+    (sum, i) => sum + (products.find((p) => p.id === i.productId)?.price ?? i.price) * i.quantity,
+    0,
+  );
   const t = new Date(createdAt).getTime();
   const at = (minutes: number) => new Date(t + minutes * 60_000).toISOString();
   return {
@@ -63,15 +66,14 @@ function pastOrder(
     phone: demoUser.phone,
     address: demoAddresses[0],
     items,
-    subtotal,
-    deliveryFee,
-    total: subtotal + deliveryFee,
+    ...toBill(calculateBill(subtotal, mrpTotal)),
+    instructions: [],
     status: "delivered",
     statusHistory: [
       { status: "received", at: at(0) },
-      { status: "packing", at: at(12) },
-      { status: "out_for_delivery", at: at(41) },
-      { status: "delivered", at: at(95) },
+      { status: "packing", at: at(3) },
+      { status: "out_for_delivery", at: at(9) },
+      { status: "delivered", at: at(18) },
     ],
     autoProgress: false,
     ...extra,
@@ -90,7 +92,7 @@ export const demoOrders: Order[] = [
       line("tomatoes", 2),
       line("afghan-naan", 6),
     ],
-    { slotId: "today-14", paymentMethod: "cod", storeId: "kabul-shahr-e-naw" },
+    { slotId: "express", paymentMethod: "cod", storeId: "kabul-shahr-e-naw", rating: 5 },
   ),
   pastOrder(
     "BF-406551",
@@ -102,7 +104,7 @@ export const demoOrders: Order[] = [
       line("kandahar-pomegranates", 2),
       line("mineral-water-6", 1),
     ],
-    { slotId: "today-16", paymentMethod: "hesabpay", storeId: "kabul-shahr-e-naw" },
+    { slotId: "express", paymentMethod: "hesabpay", storeId: "kabul-shahr-e-naw", rating: 4 },
   ),
   pastOrder(
     "BF-391374",

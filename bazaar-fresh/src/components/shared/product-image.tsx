@@ -37,14 +37,18 @@ export function ProductImage({
       className={cn("@container relative aspect-square w-full overflow-hidden", className)}
       style={{ backgroundColor: tint }}
     >
-      <ImageWithFallback
-        src={product.image}
-        alt={product.name}
-        sizes={sizes}
-        priority={priority}
-        fallback={<EmojiTile emoji={product.emoji} />}
-        className="transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-      />
+      {product.image ? (
+        <ImageWithFallback
+          src={product.image}
+          alt={product.name}
+          sizes={sizes}
+          priority={priority}
+          fallback={<EmojiTile emoji={product.emoji} />}
+          className="transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+      ) : (
+        <EmojiTile emoji={product.emoji} />
+      )}
     </div>
   );
 }

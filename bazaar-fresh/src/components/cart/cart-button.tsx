@@ -34,13 +34,20 @@ export function CartButton({ className }: { className?: string }) {
       onClick={() => setCartOpen(true)}
       aria-label={`${t("header.openCart")} (${t("cart.itemCount", { count })})`}
       className={cn(
-        "relative inline-flex h-11 items-center gap-2 rounded-full bg-primary px-3.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary-hover active:scale-95",
+        "relative inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-3.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary-hover active:scale-95",
         className,
       )}
     >
-      <ShoppingBasket className="size-5" />
-      <span className="hidden tabular-nums sm:inline">{count > 0 ? price(subtotal) : t("nav.cart")}</span>
-      <CartCountBadge count={count} className="absolute -end-1 -top-1" />
+      <ShoppingBasket className="size-6" />
+      {count > 0 ? (
+        <span key={count} className="hidden flex-col items-start leading-tight sm:flex animate-in fade-in">
+          <span className="text-xs font-semibold">{t("cart.itemCount", { count })}</span>
+          <span className="tabular-nums">{price(subtotal)}</span>
+        </span>
+      ) : (
+        <span className="hidden sm:inline">{t("nav.cart")}</span>
+      )}
+      <CartCountBadge count={count} className="absolute -end-1.5 -top-1.5 sm:hidden" />
     </button>
   );
 }

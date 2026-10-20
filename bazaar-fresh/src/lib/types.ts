@@ -1,8 +1,12 @@
-import type { DeliverySlotId, PaymentMethod, StoreId } from "@/config/site";
+import type { CouponCode, DeliverySlotId, PaymentMethod, StoreId } from "@/config/site";
 import type { Product, Unit } from "@/data/products";
 
 export const ORDER_STATUSES = ["received", "packing", "out_for_delivery", "delivered"] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
+
+/** Delivery instructions the customer can tick in the cart (labels under `instructions`). */
+export const DELIVERY_INSTRUCTIONS = ["noCall", "noBell", "leaveAtDoor", "leaveWithGuard"] as const;
+export type DeliveryInstruction = (typeof DELIVERY_INSTRUCTIONS)[number];
 
 export interface Address {
   id: string;
@@ -15,7 +19,7 @@ export interface Address {
 export interface OrderItem {
   productId: string;
   name: string;
-  image: string;
+  image?: string;
   emoji: string;
   unit: Unit;
   size: string;
@@ -24,22 +28,39 @@ export interface OrderItem {
   quantity: number;
 }
 
-export interface Order {
+/** Everything the customer pays, as shown in "Bill details". */
+export interface Bill {
+  /** Sum of item prices the customer pays. */
+  subtotal: number;
+  /** Sum of regular (MRP) prices, before product discounts. */
+  mrpTotal: number;
+  deliveryFee: number;
+  handlingFee: number;
+  smallCartFee: number;
+  couponDiscount: number;
+  tip: number;
+  total: number;
+}
+
+export interface Order extends Bill {
   id: string;
   createdAt: string;
   customerName: string;
   phone: string;
+  /** Set when the order is a gift / for someone else. */
+  receiver?: { name: string; phone: string };
   storeId: StoreId;
   address: Omit<Address, "id">;
   slotId: DeliverySlotId;
   paymentMethod: PaymentMethod;
+  couponCode?: CouponCode;
+  instructions: DeliveryInstruction[];
   notes?: string;
   items: OrderItem[];
-  subtotal: number;
-  deliveryFee: number;
-  total: number;
   status: OrderStatus;
   statusHistory: { status: OrderStatus; at: string }[];
+  /** Customer rating (1–5) left after delivery. */
+  rating?: number;
   /** Demo only: when true the order moves through the statuses on its own. */
   autoProgress: boolean;
 }
