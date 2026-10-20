@@ -1,0 +1,129 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Brand colors come from src/config/site.ts and are set on <html> by the root
+ * layout. The values below are only fallbacks.
+ */
+:root {
+  --primary: #0b6b3a;
+  --primary-foreground: #ffffff;
+  --deal: #f26a1b;
+  --deal-foreground: #ffffff;
+
+  --primary-hover: color-mix(in oklab, var(--primary) 86%, black);
+  --primary-soft: color-mix(in oklab, var(--primary) 9%, white);
+  --primary-deep: color-mix(in oklab, var(--primary) 70%, black);
+  --deal-soft: color-mix(in oklab, var(--deal) 12%, white);
+
+  --background: #ffffff;
+  --foreground: #15201a;
+  --surface: #f6f7f4;
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+  --muted: #f1f3f0;
+  --muted-foreground: #5f6b64;
+  --border: #e5e8e4;
+  --input: #dadfdb;
+  --ring: var(--primary);
+  --destructive: #d92d20;
+  --star: #f5a524;
+  --whatsapp: #25d366;
+  --radius: 1rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-deep: var(--primary-deep);
+  --color-deal: var(--deal);
+  --color-deal-foreground: var(--deal-foreground);
+  --color-deal-soft: var(--deal-soft);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-star: var(--star);
+  --color-whatsapp: var(--whatsapp);
+
+  --font-sans: "Inter Variable", "Vazirmatn Variable", "Noto Naskh Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-rtl: "Vazirmatn Variable", "Noto Naskh Arabic", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) - 4px);
+  --radius-2xl: var(--radius);
+  --radius-3xl: calc(var(--radius) + 8px);
+
+  --shadow-card: 0 1px 2px rgb(16 24 20 / 0.04), 0 2px 8px rgb(16 24 20 / 0.04);
+  --shadow-card-hover: 0 4px 10px rgb(16 24 20 / 0.06), 0 14px 32px rgb(16 24 20 / 0.08);
+
+  --animate-pop: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-fade-up: fade-up 0.4s ease-out both;
+  --animate-check: check 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-ping-slow: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.35); }
+  65% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes check {
+  0% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 9rem;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  html[dir="rtl"] body {
+    font-family: var(--font-rtl);
+    font-feature-settings: normal;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
